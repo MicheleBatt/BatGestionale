@@ -56,10 +56,12 @@
         </table>
       </div>
     <% else %>
-      <p class="text-center">
-        <span class="text-muted"><i class="fas fa-sad-tear fa-2x fa-align-middle"></i>Al momento non ci sono scadenze nel registro di famiglia...</span>
-        <%= ibutton(label: 'Inserisci una nuova Scadenza', link: new_deadline_path, icon: 'plus-circle', size: 'lg', style: 'default') %>
-      </p>
+      <div class="text-center">
+        <p class="text-muted">
+          <i class="fas fa-sad-tear fa-2x fa-align-middle mr-2 mb-5"></i>
+          Al momento non ci sono scadenze nel registro di famiglia...
+        </p>
+      </div>
     <% end %>
   </div>
 </div>
