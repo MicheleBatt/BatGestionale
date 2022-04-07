@@ -1,15 +1,5 @@
-<h1>HOMEPAGE</h1>
 
-<%= react_component("Hello",
-  {
-    hello: 'Hello Batgestionale!!'
-  })
-%>
+<div class="d-flex justify-content-center w-100 mt-5 mb-5">
+  <h1>Benvenuto nel BatGestionale!</h1>
+</div>
 
-<% if user_signed_in? %>
-  <%= button_to 'LOG OUT', destroy_user_session_path, class: 'btn btn-primary', :method => :delete %>
-<% else %>
-  <%= link_to 'REGISTRAZIONE', new_user_registration_path, class: 'btn btn-primary' %>
-  <br />
-  <%= link_to 'Log in', new_user_session_path, class: 'btn btn-primary' %>
-<% end %>

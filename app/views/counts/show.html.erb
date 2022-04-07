@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @count %>
+
+<div>
+  <%= link_to "Edit this count", edit_count_path(@count) %> |
+  <%= link_to "Back to counts", counts_path %>
+
+  <%= button_to "Destroy this count", @count, method: :delete %>
+</div>

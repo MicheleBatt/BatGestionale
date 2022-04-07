@@ -1,0 +1,15 @@
+<div class="container mb-5">
+  <div class="container shadow bg-light card p-4 my-4">
+    <h2>Conto Corrente / Edit / <%= @count.name %>
+    </h2>
+  </div>
+
+  <div class="container card shadow bg-light p-4 my-4">
+    <h4 class='d-flex justify-content-end text-right pb-5 pl-5'>
+      <%= link_to "Torna all'elenco di tutti i conti Correnti", counts_path, class:"btn btn-primary" %>
+    </h4>
+
+    <%= render 'form', encasing: @count %>
+  </div>
+</div>
+

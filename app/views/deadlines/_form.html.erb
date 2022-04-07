@@ -1,0 +1,25 @@
+<%= form_with(model: @deadline, local: true, class: 'form-horizontal') do |f| %>
+  <%= render 'layouts/error_messages', obj: f.object %>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-5">
+      <%= f.label :data_di_scadenza, style: "display: block" %>
+      <%= f.date_field :expired_at, class: 'form-control' %>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-5">
+      <%= f.label :descrizione, style: "display: block" %>
+      <%= f.text_field :description, class: 'form-control', placeholder: 'Descrivi qui ciò che scade' %>
+    </div>
+  </div>
+
+
+  <div class="hr-line-dashed"></div>
+
+  <div class="form-group">
+    <div class="text-center">
+      <%= f.button :submit, class: 'btn btn-success btn-lg' do %>
+        <i class="fas fa-save"></i> Salva
+      <% end %>
+    </div>
+  </div>
+<% end %>
