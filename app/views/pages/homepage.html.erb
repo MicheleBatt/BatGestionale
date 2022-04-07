@@ -1,2 +1,15 @@
 <h1>HOMEPAGE</h1>
-<p>Hello BatGestionale!!</p>
+
+<%= react_component("Hello",
+  {
+    hello: 'Hello BatGestionale!!'
+  })
+%>
+
+<% if user_signed_in? %>
+  <%= button_to 'LOG OUT', destroy_user_session_path, class: 'btn btn-primary', :method => :delete %>
+<% else %>
+  <%= link_to 'REGISTRAZIONE', new_user_registration_path, class: 'btn btn-primary' %>
+  <br />
+  <%= link_to 'Log in', new_user_session_path, class: 'btn btn-primary' %>
+<% end %>
