@@ -1,5 +1,10 @@
 
 <div class="d-flex justify-content-center w-100 mt-5 mb-5">
-  <h1>Benvenuto nel BatGestionale!</h1>
+  <div class="d-block text-center">
+    <% if user_signed_in? %>
+      <h1>Ciao <%= current_user.username %>!</h1>
+    <% end %>
+    <h1>Benvenuto nel BatGestionale!</h1>
+  </div>
 </div>
 

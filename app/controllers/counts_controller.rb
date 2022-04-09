@@ -9,6 +9,10 @@ class CountsController < ApplicationController
 
   # GET /counts/1 or /counts/1.json
   def show
+    @current_month = CreateMonthCommand.call(@count)
+    @out_month = @current_month.movements.where(movement_type: 'out').sum(&:amount)
+    @in_month = @current_month.movements.where(movement_type: 'in').sum(&:amount)
+    @in_out_month = @in_month - @out_month
   end
 
   # GET /counts/new
@@ -23,6 +27,7 @@ class CountsController < ApplicationController
   # POST /counts or /counts.json
   def create
     @count = Count.new(count_params)
+    @count.amount = @count.initial_amount
 
     respond_to do |format|
       if @count.save
@@ -66,6 +71,6 @@ class CountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def count_params
-      params.require(:count).permit(:name, :description, :amount, :initial_amount)
+      params.require(:count).permit(:name, :description, :amount, :initial_amount, :iban)
     end
 end

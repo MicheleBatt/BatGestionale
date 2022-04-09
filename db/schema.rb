@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_07_215949) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_09_093327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_07_215949) do
     t.float "initial_amount", default: 0.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "iban"
   end
 
   create_table "deadlines", force: :cascade do |t|
@@ -28,6 +29,41 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_07_215949) do
     t.string "description", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "expense_items", force: :cascade do |t|
+    t.string "description", null: false
+    t.string "color", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["color"], name: "index_expense_items_on_color", unique: true
+    t.index ["description"], name: "index_expense_items_on_description", unique: true
+  end
+
+  create_table "months", force: :cascade do |t|
+    t.bigint "count_id", null: false
+    t.integer "year", null: false
+    t.integer "month", null: false
+    t.float "initial_amount", null: false
+    t.float "final_amount", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["count_id"], name: "index_months_on_count_id"
+  end
+
+  create_table "movements", force: :cascade do |t|
+    t.bigint "count_id", null: false
+    t.bigint "month_id", null: false
+    t.bigint "expense_item_id", null: false
+    t.float "amount", null: false
+    t.text "causal", null: false
+    t.string "movement_type", null: false
+    t.datetime "currency_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["count_id"], name: "index_movements_on_count_id"
+    t.index ["expense_item_id"], name: "index_movements_on_expense_item_id"
+    t.index ["month_id"], name: "index_movements_on_month_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,4 +79,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_07_215949) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "months", "counts"
+  add_foreign_key "movements", "counts"
+  add_foreign_key "movements", "expense_items"
+  add_foreign_key "movements", "months"
 end

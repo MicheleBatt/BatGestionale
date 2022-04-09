@@ -1,0 +1,64 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="container mb-5">
+  <div class="container shadow bg-light card p-4 my-4">
+    <h2>Voci di Spesa</h2>
+  </div>
+
+  <div class="container shadow bg-light card p-4">
+    <div class="f-flex justify-content-end text-right mb-5">
+      <%= link_to new_expense_item_path, class:"btn btn-primary" do %>
+        <i class="fas fa-plus mr-1 w-5"></i>
+        <span class="nav-label">
+          Inserisci una nuova Voce di Spesa
+        </span>
+      <% end %>
+    </div>
+
+    <% if @expense_items.present? %>
+      <div class="table-responsive" data-controller="reloader">
+        <table class="table table-hover no-margins">
+          <thead>
+          <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Descrizione</th>
+            <th class="text-center"></th>
+            <th class="buttons"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @expense_items.each do |expense_item| %>
+            <tr>
+              <td class="text-center"><%= expense_item.id %></td>
+
+              <td class="text-center"><%= expense_item.description %></td>
+              <td class="text-center">
+                <div style="background-color: <%= expense_item.color %>"
+                     class="color-box not-selected-color-box rounded"></div>
+              </td>
+
+              <td class="text-center">
+                <div class="btn-group">
+                  <%= link_to edit_expense_item_path(expense_item), class: "btn btn-xs btn-secondary rounded mr-1", title: 'Edit' do %>
+                    <i class="fas fa-fw fa-edit"></i>
+                  <% end %>
+                  <%= button_to expense_item, class: "btn btn-xs btn-danger rounded", title: 'Delete', confirm: 'Sei davvero sicuro di voler eliminare questa voce di spesa?', method: :delete do %>
+                    <i class="fas fa-fw fa-trash"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center">
+        <p class="text-muted">
+          <i class="fas fa-sad-tear fa-2x fa-align-middle mr-2 mb-5"></i>
+          Al momento non ci sono voci di spesa in archivio...
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,10 +1,28 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @count %>
-
-<div>
-  <%= link_to "Edit this count", edit_count_path(@count) %> |
-  <%= link_to "Back to counts", counts_path %>
-
-  <%= button_to "Destroy this count", @count, method: :delete %>
+<div class="container-fluid shadow bg-light card p-4 my-4 ml-5 mr-">
+  <h2>Registro Economico <%= @count.name %> - <%= Date.current.in_time_zone("Europe/Rome").try(:strftime, '%B %Y') %> </h2>
 </div>
+
+<div class="container-fluid shadow bg-light card p-4 ml-5 mr-5">
+  <% @expense_items = ExpenseItem.all %>
+
+  <%= react_component("IndexMovementsByMonth",
+    {
+      originalCount: render(template: 'counts/count', formats: [:json]),
+      originalMonth: render(template: 'counts/month', formats: [:json]),
+      expense_items: render(template: 'counts/expense_items', formats: [:json]),
+      outMonth: @out_month,
+      inMonth: @in_month,
+      inOutMonth: @in_out_month
+    })
+  %>
+
+  <%#= react_component("IndexMovementsByMonth",
+    {
+      originalMonth: from_jbuilder('counts/month', {formats: [:json]})
+    })
+  %>
+</div>
+
+

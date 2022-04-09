@@ -14,3 +14,49 @@
  *= require_self
  */
 @import "bootstrap";
+
+
+.color-red {
+    color: red !important;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.color-box {
+    width : 35px;
+    height: 35px
+}
+
+.selected-color-box {
+    border: 2px deepskyblue solid;
+}
+
+.not-selected-color-box {
+    border: 1px transparent solid;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.b-right-solid {
+    border-right: black 1px solid !important;
+}
+
+.b-left-solid {
+    border-left: black 1px solid !important;
+}
+
+.b-top-solid {
+    border-top: black 1px solid !important;
+}
+
+.b-bottom-solid {
+    border-bottom: black 1px solid !important;
+}
+
+.b-solid {
+    border: black 1px solid !important;
+}

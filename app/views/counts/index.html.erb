@@ -13,6 +13,13 @@
           Crea un nuovo Conto
         </span>
       <% end %>
+
+      <%= link_to expense_items_path, class:"btn btn-secondary" do %>
+        <i class="fas fa-list mr-1 w-5"></i>
+        <span class="nav-label">
+          Voci di Spesa
+        </span>
+      <% end %>
     </div>
 
     <% if @counts.present? %>
