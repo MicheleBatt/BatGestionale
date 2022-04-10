@@ -20,6 +20,14 @@
     color: red !important;
 }
 
+.bg-red {
+    background-color: red;
+}
+
+.bg-green {
+    background-color: #4FA845;
+}
+
 .text-underline {
     text-decoration: underline;
 }
@@ -59,4 +67,13 @@
 
 .b-solid {
     border: black 1px solid !important;
+}
+
+.b-top-bottom-transparent {
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.b-bottom-transparent {
+    border-top: transparent 0;
 }

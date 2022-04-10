@@ -1,3 +1,3 @@
 class Count < ApplicationRecord
-  has_many :months, dependent: :destroy
+  has_many :movements, dependent: :destroy
 end

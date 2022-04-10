@@ -1,21 +1,23 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="container-fluid shadow bg-light card p-4 my-4 ml-5 mr-">
-  <h2>Registro Economico <%= @count.name %> - <%= Date.current.in_time_zone("Europe/Rome").try(:strftime, '%B %Y') %> </h2>
-</div>
-
-<div class="container-fluid shadow bg-light card p-4 ml-5 mr-5">
+<div>
   <% @expense_items = ExpenseItem.all %>
 
   <%= react_component("IndexMovementsByMonth",
     {
       originalCount: render(template: 'counts/count', formats: [:json]),
-      originalMonth: render(template: 'counts/month', formats: [:json]),
+      originalMovements: render(template: 'counts/movements', formats: [:json]),
       expense_items: render(template: 'counts/expense_items', formats: [:json]),
+      initialMonthAmount: @initial_month_amount,
       outMonth: @out_month,
       inMonth: @in_month,
-      inOutMonth: @in_out_month
-    })
+      inOutMonth: @in_out_month,
+      amounts_by_expensive_items: @movements_amounts_by_expense_item,
+      currentYear: @movements.present? ? @movements.first.year : Date.current.year,
+      currentMonth: @movements.present? ? @movements.first.month : Date.current.month,
+      enablePreviousMonth: enable_previous_month(@count, @current_year_month),
+      enableNextMonth: enable_next_month(@count, @current_year_month)
+    }, prerender: true)
   %>
 
   <%#= react_component("IndexMovementsByMonth",

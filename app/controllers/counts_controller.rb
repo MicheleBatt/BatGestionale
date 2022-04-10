@@ -9,10 +9,30 @@ class CountsController < ApplicationController
 
   # GET /counts/1 or /counts/1.json
   def show
-    @current_month = CreateMonthCommand.call(@count)
-    @out_month = @current_month.movements.where(movement_type: 'out').sum(&:amount)
-    @in_month = @current_month.movements.where(movement_type: 'in').sum(&:amount)
+    now = Date.current
+    @current_year = now.year
+    @current_month = now.month
+    @current_year_month = (@current_year.to_s + @current_month.to_s.rjust(2, '0')).to_i
+    @movements = Movement.where(count_id: @count.id, year: @current_year, month: @current_month).order(currency_date: :asc)
+    @initial_month_amount = Movement.where(count_id: @count.id).where('movements.year_month < ?', @current_year_month).sum(&:amount)
+    @out_month = @movements.where(movement_type: 'out').sum(&:amount)
+    @in_month = @movements.where(movement_type: 'in').sum(&:amount)
     @in_out_month = @in_month - @out_month
+
+    @movements_amounts_by_expense_item = Hash.new(0)
+
+    @movements.each do | movement |
+      if movement.expense_item_id.present?
+        @movements_amounts_by_expense_item[movement.expense_item_id.to_s] += movement.amount
+      end
+    end
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json {
+        render 'movements.json.jbuilder'
+      }
+    end
   end
 
   # GET /counts/new
@@ -27,7 +47,6 @@ class CountsController < ApplicationController
   # POST /counts or /counts.json
   def create
     @count = Count.new(count_params)
-    @count.amount = @count.initial_amount
 
     respond_to do |format|
       if @count.save
@@ -71,6 +90,6 @@ class CountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def count_params
-      params.require(:count).permit(:name, :description, :amount, :initial_amount, :iban)
+      params.require(:count).permit(:name, :description, :initial_amount, :iban)
     end
 end

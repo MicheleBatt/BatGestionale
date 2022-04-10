@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-bootstrap/Modal";
 import MovementForm from "./MovementForm";
+import {isValidMovement} from "../utils";
 
 
 const MovementModal = ({ movement, setMovement, expense_items, handleConfirm }) => {
@@ -46,6 +47,7 @@ const MovementModal = ({ movement, setMovement, expense_items, handleConfirm }) 
                     <button
                         type="button"
                         className="btn btn-success pr-2 pl-2"
+                        disabled={!isValidMovement(movement)}
                         onClick={ handleConfirm }>
                         <i className="fas fa-save" /> Salva
                     </button>
