@@ -165,7 +165,7 @@ const IndexMovementsByMonth = ({
                                 { year: count.current_year, month: count.current_month - 1 } :
                                 { year: count.current_year - 1, month: 12 }
                             )}>
-                                <i className="fas fa-angle-left mr-2" />
+                                <i aria-hidden className="fas fa-angle-left mr-2" />
                                 Mese Precedente
                             </button>
                       }
@@ -210,7 +210,7 @@ const IndexMovementsByMonth = ({
                                           { year: count.current_year + 1, month: 1 }
                                       )}>
                                   Mese Successivo
-                                  <i className="fas fa-angle-right ml-2" />
+                                  <i aria-hidden className="fas fa-angle-right ml-2" />
                               </button>
                       }
                   </div>
@@ -222,13 +222,13 @@ const IndexMovementsByMonth = ({
                   <button className="btn btn-danger mr-3"
                           onClick={() => setMovement(newOutMovement)}
                   >
-                      <i className="fas fa-plus mr-1 w-5" />
+                      <i aria-hidden className="fas fa-plus mr-1 w-5" />
                       Inserisci nuovo Movimento in Uscita
                   </button>
                   <button className="btn btn-success mr-3"
                           onClick={() => setMovement(newInMovement)}
                   >
-                      <i className="fas fa-plus mr-1 w-5" />
+                      <i aria-hidden className="fas fa-plus mr-1 w-5" />
                       Inserisci nuovo Movimento in Entrata
                   </button>
                   <a href={'/counts'} className="btn btn-secondary">

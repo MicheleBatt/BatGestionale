@@ -76,7 +76,7 @@ const ExpenseItemForm = ({ originalExpenseItem, colors }) => {
                 disabled={ !expenseItem || !expenseItem.description || !expenseItem.color }
                 onClick={onSubmitHandler}
             >
-              <i className="fas fa-save" aria-hidden="true" /> Salva
+              <i aria-hidden className="fas fa-save" /> Salva
             </button>
           </div>
         </div>

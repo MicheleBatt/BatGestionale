@@ -15,7 +15,7 @@ const ErrorModal = ({
       <h4>
         <div className="d-block text-center">
           <div className="d-flex justify-content-center align-items-center">
-            <i className="fas fa-exclamation-triangle" style={{fontSize:"40px"}} />
+            <i aria-hidden className="fas fa-exclamation-triangle" style={{fontSize:"40px"}} />
             <p className="ml-2 text-space">Spiacenti, qualcosa è andato storto</p>
           </div>
           {

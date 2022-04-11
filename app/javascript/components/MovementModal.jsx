@@ -49,7 +49,7 @@ const MovementModal = ({ movement, setMovement, expense_items, handleConfirm }) 
                         className="btn btn-success pr-2 pl-2"
                         disabled={!isValidMovement(movement)}
                         onClick={ handleConfirm }>
-                        <i className="fas fa-save" /> Salva
+                        <i aria-hidden className="fas fa-save" /> Salva
                     </button>
                 </div>
             </Modal.Footer>
