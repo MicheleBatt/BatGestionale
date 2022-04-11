@@ -1,5 +1,5 @@
 class Movement < ApplicationRecord
-  belongs_to :count
+  belongs_to :count, :class_name => 'Count'
   belongs_to :expense_item, optional: true
 
   validates :amount, :movement_type, :causal, :currency_date, presence: true

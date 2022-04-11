@@ -20,4 +20,8 @@ module ApplicationHelper
   def enable_previous_month (count, year_month)
     count.movements.where('movements.year_month < ?', year_month).present?
   end
+
+  def grouped_months_by_year(count)
+    count.movements.order(year: :asc, month: :asc).pluck(:year, :month).uniq.group_by { | item | item[0] }
+  end
 end

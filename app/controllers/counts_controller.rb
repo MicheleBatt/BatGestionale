@@ -9,9 +9,15 @@ class CountsController < ApplicationController
 
   # GET /counts/1 or /counts/1.json
   def show
-    now = Date.current
-    @current_year = now.year
-    @current_month = now.month
+    if !params[:year].present? && !params[:month].present?
+      now = Date.current
+      @current_year = now.year
+      @current_month = now.month
+    else
+      @current_year = params[:year].to_i
+      @current_month = params[:month].to_i
+    end
+
     @current_year_month = (@current_year.to_s + @current_month.to_s.rjust(2, '0')).to_i
     @movements = Movement.where(count_id: @count.id, year: @current_year, month: @current_month).order(currency_date: :asc)
     @initial_month_amount = Movement.where(count_id: @count.id).where('movements.year_month < ?', @current_year_month).sum(&:amount)
@@ -30,7 +36,7 @@ class CountsController < ApplicationController
     respond_to do |format|
       format.html { render :show }
       format.json {
-        render 'movements.json.jbuilder'
+        render 'counts/count'
       }
     end
   end

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import ErrorModal from "./ErrorModal";
 import {CURRENCY_EURO, parseMonth} from "../utils";
 import MovementModal from "./MovementModal";
@@ -6,24 +6,18 @@ import MovementModal from "./MovementModal";
 
 const IndexMovementsByMonth = ({
     originalCount,
-    originalMovements,
-    initialMonthAmount,
-    outMonth,
-    inMonth,
-    inOutMonth,
     expense_items,
-    amounts_by_expensive_items,
-    currentYear,
-    currentMonth,
-    enablePreviousMonth,
-    enableNextMonth
+    groupedMonthsByYear
 }) => {
 
     const [ count, setCount ] = useState(JSON.parse(originalCount))
-    const [ movements, setMovements ] = useState(JSON.parse(originalMovements))
     const [ expenseItems, setExpenseItems ] = useState(JSON.parse(expense_items))
-    const [ amountsByExpensiveItems, setAmountsByExpensiveItems ] = useState(amounts_by_expensive_items)
     const [ showErrorModal, setShowErrorModal ] = useState(false)
+    const emptyFilters = {
+        year: '',
+        month: ''
+    }
+    const [ filters, setFilters ] = useState(null)
 
     const newOutMovement = {
         count_id: count.id,
@@ -47,12 +41,20 @@ const IndexMovementsByMonth = ({
 
     const [ movement, setMovement ] = useState(null)
 
-    console.log('movements: ', movements)
+    console.log('count: ', count)
     console.log('expenseItems: ', expenseItems)
-    console.log('enablePreviousMonth: ', enablePreviousMonth)
-    console.log('enableNextMonth: ', enableNextMonth)
-    console.log('amounts_by_expensive_items: ', amounts_by_expensive_items)
+    console.log('groupedMonthsByYear: ', groupedMonthsByYear)
 
+
+
+
+
+
+    useEffect(() => {
+        if (filters) {
+            getCount()
+        }
+    }, [filters]);
 
 
     const createMovement = () => {
@@ -80,6 +82,23 @@ const IndexMovementsByMonth = ({
             });
     }
 
+
+    // Funzione che permette di ottenere dal server nuovi movimenti del conto
+    const getCount = () => {
+        console.log('getSubmissionLists')
+
+        let url = `/counts/${count.id}.json?year=${filters.year}&month=${filters.month}`
+
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then((data) => {
+                console.log(data);
+                setCount(data)
+            })
+            .catch((err) => console.log(err));
+    }
 
 
 
@@ -132,25 +151,64 @@ const IndexMovementsByMonth = ({
     
     
   return (
-      <>
-          <div className="container-fluid shadow bg-light card p-4 ml-5 mr-5">
+      <div className="container-fluid pr-3">
+          <div className="container-fluid shadow bg-light card p-4 ml-1 mr-5">
               <div className="row">
-                  <div className="col-8">
-                      <h2>Registro Economico { count.name } - { parseMonth(currentMonth) } { currentYear}</h2>
+                  <div className="col-6">
+                      <h2>Registro Economico { count.name } - { parseMonth(count.current_month) } { count.current_year}</h2>
                   </div>
-                  <div className="col-2">
+                  <div className="col-2 d-flex justify-content-end">
                       {
-                          enablePreviousMonth &&
-                            <button className="btn btn-secondary">
+                          count.enable_previous_month &&
+                            <button className="btn btn-secondary"
+                            onClick={() => setFilters(count.current_month > 1 ?
+                                { year: count.current_year, month: count.current_month - 1 } :
+                                { year: count.current_year - 1, month: 12 }
+                            )}>
                                 <i className="fas fa-angle-left mr-2" />
                                 Mese Precedente
                             </button>
                       }
                   </div>
+
+                  <div className="col-2 d-block justify-content-center">
+                      <div className="text-center">
+                          <select  name="grouped-months" id="grouped-months"
+                                   className="form-control"
+                                   value={filters && filters.year && filters.month ? filters.year.toString() + '_' +  filters.month.toString() : ''}
+                                   onChange={ (e) => setFilters(
+                                       {year: e.target.value.split('_')[0],
+                                              month: e.target.value.split('_')[1]}
+                                   )}>
+                              <option value="" key="no_user" disabled={true}>
+                                  Seleziona un mese specifico
+                              </option>
+                              {
+                                  Object.entries(groupedMonthsByYear).map(([year, months]) => {
+                                      return <optgroup key={year} label={year}>
+                                          {
+                                              months.map((month) => {
+                                                  return <option value={year.toString() + '_' + month[1].toString()}
+                                                                 key={year.toString() + '_' + month[1].toString()}>
+                                                      {parseMonth(month[1])}
+                                                  </option>
+                                              })
+                                          }
+                                      </optgroup>
+                                  })
+                              }
+                          </select>
+                      </div>
+                  </div>
+
                   <div className="col-2">
                       {
-                          enableNextMonth &&
-                              <button className="btn btn-secondary">
+                          count.enable_next_month &&
+                              <button className="btn btn-secondary"
+                                      onClick={() => setFilters(count.current_month < 12 ?
+                                          { year: count.current_year, month: count.current_month + 1 } :
+                                          { year: count.current_year + 1, month: 1 }
+                                      )}>
                                   Mese Successivo
                                   <i className="fas fa-angle-right ml-2" />
                               </button>
@@ -159,7 +217,7 @@ const IndexMovementsByMonth = ({
               </div>
           </div>
 
-          <div className="container-fluid shadow bg-light card p-4 my-4 ml-5">
+          <div className="container-fluid shadow bg-light card p-4 my-4 ml-1">
               <div className="f-flex justify-content-end text-right mb-5">
                   <button className="btn btn-danger mr-3"
                           onClick={() => setMovement(newOutMovement)}
@@ -198,7 +256,7 @@ const IndexMovementsByMonth = ({
                   </tr>
                   </thead>
                   <tbody>
-                  {movements.map((movement, i) => (
+                  {count.movements.map((movement, i) => (
                       <tr key={`movement-${movement.id}`}>
 
                           {
@@ -230,13 +288,13 @@ const IndexMovementsByMonth = ({
                           <b>TOTALE:</b>
                       </td>
                       <td className="text-center b-solid bg-red">
-                          {outMonth + CURRENCY_EURO}
+                          {count.out_month + CURRENCY_EURO}
                       </td>
                       <td className="text-right b-solid" colSpan="2">
                           <b>TOTALE:</b>
                       </td>
                       <td className="text-center b-solid bg-green">
-                          {inMonth + CURRENCY_EURO}
+                          {count.in_month + CURRENCY_EURO}
                       </td>
                   </tr>
 
@@ -252,23 +310,23 @@ const IndexMovementsByMonth = ({
                           FONDO CASSA COMPLESSIVO A INIZIO MESE:
                       </td>
                       <td className="text-center b-solid ">
-                          {initialMonthAmount + CURRENCY_EURO}
+                          {count.initial_month_amount + CURRENCY_EURO}
                       </td>
                   </tr>
                   <tr key="total_3">
                       <td className="text-right b-solid" colSpan="5">
                           SALDO COMPLESSIVO A FINE MESE:
                       </td>
-                      <td className={`text-center b-solid ${ inMonth < outMonth ? 'bg-red' : 'bg-green' }`}>
-                          {inOutMonth + CURRENCY_EURO}
+                      <td className={`text-center b-solid ${ count.in_month < count.out_month ? 'bg-red' : 'bg-green' }`}>
+                          {count.in_out_month + CURRENCY_EURO}
                       </td>
                   </tr>
                   <tr key="total_4">
                       <td className="text-right b-solid" colSpan="5">
                           FONDO CASSA COMPLESSIVO A FINE MESE:
                       </td>
-                      <td className={`text-center b-solid ${ (initialMonthAmount + inOutMonth) < initialMonthAmount ? 'bg-red' : 'bg-green' }`}>
-                          {(initialMonthAmount + inOutMonth) + CURRENCY_EURO}
+                      <td className={`text-center b-solid ${ (count.initial_month_amount + count.in_out_month) < count.initial_month_amount ? 'bg-red' : 'bg-green' }`}>
+                          {(count.initial_month_amount + count.in_out_month) + CURRENCY_EURO}
                       </td>
                   </tr>
 
@@ -286,7 +344,7 @@ const IndexMovementsByMonth = ({
                               <b>AMMONTARE { expenseItem.description.toUpperCase() }:</b>
                           </td>
                           <td className="text-center b-solid">
-                              {amountsByExpensiveItems[expenseItem.id.toString()] && amountsByExpensiveItems[expenseItem.id.toString()] + CURRENCY_EURO}
+                              {count.amounts_by_expensive_items[expenseItem.id.toString()] && count.amounts_by_expensive_items[expenseItem.id.toString()] + CURRENCY_EURO}
                           </td>
                       </tr>
                   ))}
@@ -300,7 +358,7 @@ const IndexMovementsByMonth = ({
                   handleConfirm={createMovement}
               />
           </div>
-      </>
+      </div>
     )
 }
 
