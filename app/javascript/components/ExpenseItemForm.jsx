@@ -41,7 +41,7 @@ const ExpenseItemForm = ({ originalExpenseItem, colors }) => {
       <div>
         <div className="row">
           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-5">
-            <label>Descrizione</label>
+            <label><b>Descrizione</b></label>
             <input
                 className="form-control"
                 type="text"
@@ -51,8 +51,10 @@ const ExpenseItemForm = ({ originalExpenseItem, colors }) => {
                 onChange={(e) => setExpenseItem({ ...expenseItem, description: e.target.value })}
             />
           </div>
-          <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-5">
-            <label>Colore</label>
+        </div>
+        <div className="row">
+          <div className="col-12 mb-5">
+            <label><b>Colore</b></label>
               <div className="d-flex justify-content-start text-left">
                   {
                       colors.map(color => {

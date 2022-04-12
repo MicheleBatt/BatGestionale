@@ -10,7 +10,7 @@ const MovementForm = ({ movement, setMovement, expense_items }) => {
         <div>
             <div className="row mb-3">
                 <div className="col-6 d-block justify-content-start mt-3">
-                    <b style={{display: 'block'}} htmlFor="movement_currency_date">Data Valuta</b>
+                    <b style={{display: 'block'}}>Data Valuta</b>
                     <input type="datetime-local"
                            name="currency_date"
                            id="movement_currency_date"
@@ -30,8 +30,7 @@ const MovementForm = ({ movement, setMovement, expense_items }) => {
                                              checked={type[0] === movement.movement_type}
                                              id={"movement_type_" + type[0]}
                                              onChange={(e) => setMovement({ ...movement, movement_type: e.target.value })}/>
-                                      <b className="pr-3 ml-1"
-                                         htmlFor={"movement_type_" + type[0]}> {type[1]}</b>
+                                      <b className="pr-3 ml-1"> {type[1]}</b>
                                 </span>
                                 })}
                             </div>
@@ -39,7 +38,7 @@ const MovementForm = ({ movement, setMovement, expense_items }) => {
                 }
 
                 <div className="col-6 d-block justify-content-start mt-3">
-                    <b style={{display: 'block'}} htmlFor="movement_currency_date">Ammontare</b>
+                    <b style={{display: 'block'}}>Ammontare</b>
                     <input type="number"
                            name="amount"
                            id="movement_amount"

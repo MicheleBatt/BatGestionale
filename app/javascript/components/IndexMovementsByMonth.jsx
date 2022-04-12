@@ -279,8 +279,7 @@ const IndexMovementsByMonth = ({
                   ))}
 
                   <tr key="empty_row">
-                      <td className="b-left-solid" /><td /><td className="b-right-solid"/>
-                      <EmptyRowTable />
+                      <EmptyRowTable /><EmptyRowTable />
                   </tr>
 
                   <tr key="total">

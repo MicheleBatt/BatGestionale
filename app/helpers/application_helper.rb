@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def colors
-    all_colors = [ '#17A2E2', '#6569F7', '#EB5DA9', '#F58C50', '#F7C050', '#F7EF55', '#5ABC55', '#F24424' ]
+    all_colors = [ '#FEC134', '#EE96FC', '#F4B084', '#92D051', '#BFBFBF', '#7246A0', '#A9D08D', '#1BB1F0', '#FFD966', '#C5591E', '#FFFFFF' ]
 
     all_expense_items = ExpenseItem.pluck(:color)
 
